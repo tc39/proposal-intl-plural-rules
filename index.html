@@ -1,0 +1,264 @@
+<!doctype html>
+<head><script src="https://bterlson.github.io/ecmarkup/ecmarkup.js"></script>
+<link rel="stylesheet" href="https://bterlson.github.io/ecmarkup/elements.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_light.min.css">
+
+<title>Intl.PluralForm Specification Proposal</title>
+
+<meta charset="utf-8"></head><body><div id="menu-toggle">☰</div><div id="menu"><div id="menu-toc"><ol class="toc"><li><span class="item-toggle">◢</span><a href="#pluralform-objects" title="PluralForm Objects"><span class="secnum">1</span> PluralForm Objects</a><ol class="toc"><li><span class="item-toggle">◢</span><a href="#sec-intl-pluralform-constructor" title="The Intl.PluralForm Constructor"><span class="secnum">1.1</span> The Intl.PluralForm Constructor</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-InitializePluralForm" title="InitializePluralForm (pluralForm, locales, options)"><span class="secnum">1.1.1</span> InitializePluralForm (pluralForm, locales, options)</a></li><li><span class="item-toggle-none"></span><a href="#sec-Intl.PluralForm" title="Intl.PluralForm([ locales [, options]])"><span class="secnum">1.1.2</span> Intl.PluralForm([ locales [, options]])</a></li></ol></li><li><span class="item-toggle">◢</span><a href="#sec-properties-of-intl-pluralform-constructor" title="Properties of the Intl.PluralForm Constructor"><span class="secnum">1.2</span> Properties of the Intl.PluralForm Constructor</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-Intl.PluralForm.prototype" title="Intl.PluralForm.prototype"><span class="secnum">1.2.1</span> Intl.PluralForm.prototype</a></li><li><span class="item-toggle-none"></span><a href="#sec-Intl.PluralForm.supportedLocalesOf" title="Intl.PluralForm.supportedLocalesOf (locales [, options ])"><span class="secnum">1.2.2</span> Intl.PluralForm.supportedLocalesOf (locales [, options ])</a></li><li><span class="item-toggle-none"></span><a href="#sec-Intl.PluralForm-internal-slots" title="Internal slots"><span class="secnum">1.2.3</span> Internal slots</a></li></ol></li><li><span class="item-toggle">◢</span><a href="#sec-properties-of-intl-pluralform-prototype-object" title="Properties of the Intl.PluralForm Prototype Object"><span class="secnum">1.3</span> Properties of the Intl.PluralForm Prototype Object</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-Intl.PluralForm.prototype.constructor" title="Intl.PluralForm.prototype.constructor"><span class="secnum">1.3.1</span> Intl.PluralForm.prototype.constructor</a></li><li><span class="item-toggle-none"></span><a href="#sec-Intl.PluralForm.prototype-toStringTag" title="Intl.PluralForm.prototype[@@toStringTag]"><span class="secnum">1.3.2</span> Intl.PluralForm.prototype[@@toStringTag]</a></li><li><span class="item-toggle-none"></span><a href="#sec-Intl.PluralForm.prototype.resolve" title="Intl.PluralForm.prototype.resolve"><span class="secnum">1.3.3</span> Intl.PluralForm.prototype.resolve</a></li><li><span class="item-toggle-none"></span><a href="#sec-plural-form-functions" title="Plural Form Functions"><span class="secnum">1.3.4</span> Plural Form Functions</a></li><li><span class="item-toggle-none"></span><a href="#sec-Intl.PluralForm.prototype.resolvedOptions" title="Intl.PluralForm.prototype.resolvedOptions ()"><span class="secnum">1.3.5</span> Intl.PluralForm.prototype.resolvedOptions ()</a></li></ol></li><li><span class="item-toggle-none"></span><a href="#sec-properties-of-intl-pluralform-instances" title="Properties of Intl.PluralForm Instances"><span class="secnum">1.4</span> Properties of Intl.PluralForm Instances</a></li></ol></li></ol></div></div><h1 class="orange">Proposal Details</h1>
+<h3 class="orange">Current Stage: 0 / Sept 2015</h3>
+
+<emu-import href="./pluralform.ecmarkup"><emu-clause id="pluralform-objects">
+  <h1><span class="secnum">1</span>PluralForm Objects<span class="utils"><span class="anchor"><a href="#pluralform-objects">#</a></span></span></h1>
+
+  <emu-clause id="sec-intl-pluralform-constructor">
+    <h1><span class="secnum">1.1</span>The Intl.PluralForm Constructor<span class="utils"><span class="anchor"><a href="#sec-intl-pluralform-constructor">#</a></span></span></h1>
+
+    <p>
+      The PluralForm constructor is a standard built-in property of the Intl object. Behaviour common to all service constructor properties of the Intl object is specified in  <emu-xref href="#sec-internal-slots"></emu-xref>.
+    
+    </p>
+
+    <emu-clause id="sec-InitializePluralForm" aoid="InitializePluralForm">
+      <h1><span class="secnum">1.1.1</span>InitializePluralForm (pluralForm, locales, options)<span class="utils"><span class="anchor"><a href="#sec-InitializePluralForm">#</a></span></span></h1>
+
+      <p>
+        The abstract operation InitializePluralForm accepts the arguments <var>pluralForm</var> (which must be an object), <var>locales</var>, and <var>options</var>. It initializes <var>pluralForm</var> as a PluralForm object.
+      
+      </p>
+
+      <p>
+        The following steps are taken:
+      
+      </p>
+
+      <emu-alg><ol><li>If <var>pluralForm</var> has an [[initializedIntlObject]] internal slot with value <emu-val>true</emu-val>, throw a <emu-val>TypeError</emu-val> exception.</li><li>Set <var>pluralForm</var>.[[initializedIntlObject]] to <emu-val>true</emu-val>.</li><li>Let <var>requestedLocales</var> be CanonicalizeLocaleList(<var>locales</var>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>requestedLocales</var>).</li><li>If <var>options</var> is <emu-val>undefined</emu-val>, then<ol><li>Let <var>options</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-objectcreate">ObjectCreate</a>(<emu-val>%ObjectPrototype%</emu-val>).</li></ol></li><li>Else<ol><li>Let <var>options</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-toobject">ToObject</a>(<var>options</var>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>options</var>).</li></ol></li><li>Let <var>opt</var> be a new Record.</li><li>Let <var>matcher</var> be GetOption(<var>options</var>, <emu-val>"localeMatcher"</emu-val>, <emu-val>"string"</emu-val>, «<emu-val>"lookup"</emu-val>, <emu-val>"best fit"</emu-val>», <emu-val>"best fit"</emu-val>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>matcher</var>).</li><li>Set <var>opt</var>.[[localeMatcher]] to <var>matcher</var>.</li><li>Let <var>localeData</var> be <emu-val>%PluralForm%</emu-val>.[[localeData]].</li><li>Let <var>r</var> be ResolveLocale(<emu-val>%PluralForm%</emu-val>.[[availableLocales]], <var>requestedLocales</var>, <var>opt</var>, <emu-val>%PluralForm%</emu-val>.[[relevantExtensionKeys]], <var>localeData</var>).</li><li>Set <var>pluralForm</var>.[[locale]] to the value of <var>r</var>.[[locale]].</li><li>Let <var>dataLocale</var> be <var>r</var>.[[dataLocale]].</li><li>Let <var>s</var> be GetOption(<var>options</var>, <emu-val>"style"</emu-val>, <emu-val>"string"</emu-val>, «<emu-val>"cardinal"</emu-val>, <emu-val>"ordinal"</emu-val>», <emu-val>"cardinal"</emu-val>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>s</var>).</li><li>Set <var>pluralForm</var>.[[style]] to <var>s</var>.</li><li>Let <var>dataLocaleData</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-get-o-p">Get</a>(<var>localeData</var>, <var>dataLocale</var>).</li><li>Let <var>pluralRules</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-get-o-p">Get</a>(<var>dataLocaleData</var>, <emu-val>"pluralRules"</emu-val>).</li><li>Assert: <var>pluralRules</var> is an object (see <emu-xref href="#sec-Intl.PluralForm-internal-slots"><a href="#sec-Intl.PluralForm-internal-slots">1.2.3</a></emu-xref>).</li><li>Set <var>pluralForm</var>.[[pluralRule]] to <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-get-o-p">Get</a>(<var>pluralRules</var>, s).</li><li>Set <var>pluralForm</var>.[[boundResolve]] to <emu-val>undefined</emu-val>.</li><li>Set <var>pluralForm</var>.[[initializedPluralForm]] to <emu-val>true</emu-val>.</li><li>Return <var>pluralForm</var>.
+      </li></ol></emu-alg>
+
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm">
+      <h1><span class="secnum">1.1.2</span>Intl.PluralForm([ locales [, options]])<span class="utils"><span class="anchor"><a href="#sec-Intl.PluralForm">#</a></span></span></h1>
+
+      <p>
+        When the <emu-val>Intl.PluralForm</emu-val> function is called with optional arguments the following steps are taken:
+      
+      </p>
+
+      <emu-alg><ol><li>If NewTarget is <emu-val>undefined</emu-val>, let <var>newTarget</var> be the active function object, else let <var>newTarget</var> be NewTarget.</li><li>Let <var>pluralForm</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-ordinarycreatefromconstructor">OrdinaryCreateFromConstructor</a>(<var>newTarget</var>, <emu-val>%PluralFormPrototype%</emu-val>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>pluralForm</var>).</li><li>Return <a href="#sec-InitializePluralForm">InitializePluralForm</a>(<var>pluralForm</var>, <var>locales</var>, <var>options</var>).
+      </li></ol></emu-alg>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-pluralform-constructor">
+    <h1><span class="secnum">1.2</span>Properties of the Intl.PluralForm Constructor<span class="utils"><span class="anchor"><a href="#sec-properties-of-intl-pluralform-constructor">#</a></span></span></h1>
+
+    <p>
+      Besides the internal slots and the <emu-val>length</emu-val> property (whose value is 0), the Intl.PluralForm constructor has the following properties:
+    
+    </p>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype">
+      <h1><span class="secnum">1.2.1</span>Intl.PluralForm.prototype<span class="utils"><span class="anchor"><a href="#sec-Intl.PluralForm.prototype">#</a></span></span></h1>
+
+      <p>
+        The value of <emu-val>Intl.PluralForm.prototype</emu-val> is <emu-val>%PluralFormPrototype%</emu-val>.
+      
+      </p>
+      <p>
+        This property has the attributes { [[Writable]]: <emu-val>false</emu-val>, [[Enumerable]]: <emu-val>false</emu-val>, [[Configurable]]: <emu-val>false</emu-val> }.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm.supportedLocalesOf">
+      <h1><span class="secnum">1.2.2</span>Intl.PluralForm.supportedLocalesOf (locales [, options ])<span class="utils"><span class="anchor"><a href="#sec-Intl.PluralForm.supportedLocalesOf">#</a></span></span></h1>
+
+      <p>
+        When the <emu-val>supportedLocalesOf</emu-val> method of <emu-val>%PluralForm%</emu-val> is called, the following steps are taken:
+      
+      </p>
+
+      <emu-alg><ol><li>Let <var>availableLocales</var> be <emu-val>%PluralForm%</emu-val>.[[availableLocales]].</li><li>Let <var>requestedLocales</var> be CanonicalizeLocaleList(<var>locales</var>).</li><li>Return SupportedLocales(<var>availableLocales</var>, <var>requestedLocales</var>, <var>options</var>).
+      </li></ol></emu-alg>
+
+      <p>
+        The value of the <emu-val>length</emu-val> property of the <emu-val>supportedLocalesOf</emu-val> method is 1.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm-internal-slots">
+      <h1><span class="secnum">1.2.3</span>Internal slots<span class="utils"><span class="anchor"><a href="#sec-Intl.PluralForm-internal-slots">#</a></span></span></h1>
+
+      <p>
+        The value of the [[availableLocales]] internal slot is implementation defined within the constraints described in  <emu-xref href="#sec-internal-slots"></emu-xref>.
+      
+      </p>
+
+      <p>
+        The value of the [[relevantExtensionKeys]] internal slot is <emu-val>["pr"]</emu-val>.
+      
+      </p>
+
+      <emu-note><span class="note">Note 1</span>
+        Unicode Technical Standard 35 describes one locale extension key that is relevant to pluralization form, "pr" for language plural rules.
+      
+      </emu-note>
+
+      <p>
+        The value of the [[localeData]] internal slot is implementation defined within the constraints described in  <emu-xref href="#sec-internal-slots"></emu-xref> and the following additional constraints:
+      
+      </p>
+
+      <ul>
+        <li>[[localeData]][locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have properties with the names of the two plural form styles: <emu-val>"ordinal"</emu-val> and <emu-val>"cardinal"</emu-val>. Each of these properties in turn must be a function. These functions expect a numeric argument and the return must be string value <emu-val>"zero"</emu-val>, <emu-val>"one"</emu-val>, <emu-val>"two"</emu-val>, <emu-val>"few"</emu-val>, <emu-val>"many"</emu-val> or <emu-val>"other"</emu-val>. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules.</li>
+      </ul>
+
+      <emu-note><span class="note">Note 2</span>
+        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at  <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+      
+      </emu-note>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-pluralform-prototype-object">
+    <h1><span class="secnum">1.3</span>Properties of the Intl.PluralForm Prototype Object<span class="utils"><span class="anchor"><a href="#sec-properties-of-intl-pluralform-prototype-object">#</a></span></span></h1>
+
+    <p>
+      The Intl.PluralForm prototype object is itself an Intl.PluralForm instance as specified in  <emu-xref href="#sec-properties-of-intl-pluralform-instances"><a href="#sec-properties-of-intl-pluralform-instances">1.4</a></emu-xref>, whose internal slots are set as if it had been constructed by the expression <emu-xref aoid="Construct"><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-construct">Construct</a></emu-xref>(<emu-val>%PluralForm%</emu-val>).
+    
+    </p>
+    <p>
+      In the following descriptions of functions that are properties or [[Get]] attributes of properties of <emu-val>%PluralFormPrototype%</emu-val>, the phrase "this PluralForm object" refers to the object that is the this  value for the invocation of the function; a <emu-val>TypeError</emu-val> exception is thrown if the this value is not an object or an object that does not have an [[initializedPluralForm]] internal slot with value <emu-val>true</emu-val>.
+    
+    </p>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype.constructor">
+      <h1><span class="secnum">1.3.1</span>Intl.PluralForm.prototype.constructor<span class="utils"><span class="anchor"><a href="#sec-Intl.PluralForm.prototype.constructor">#</a></span></span></h1>
+
+      <p>
+        The initial value of <emu-val>Intl.PluralForm.prototype.constructor</emu-val> is <emu-val>%PluralForm%</emu-val>.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype-toStringTag">
+      <h1><span class="secnum">1.3.2</span>Intl.PluralForm.prototype[@@toStringTag]<span class="utils"><span class="anchor"><a href="#sec-Intl.PluralForm.prototype-toStringTag">#</a></span></span></h1>
+
+      <p>
+        The initial value of the @@toStringTag property is the string value <emu-val>"Object"</emu-val>.
+      
+      </p>
+      <p>
+        This property has the attributes { [[Writable]]: <emu-val>false</emu-val>, [[Enumerable]]: <emu-val>false</emu-val>, [[Configurable]]: <emu-val>true</emu-val> }.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype.resolve">
+      <h1><span class="secnum">1.3.3</span>Intl.PluralForm.prototype.resolve<span class="utils"><span class="anchor"><a href="#sec-Intl.PluralForm.prototype.resolve">#</a></span></span></h1>
+
+      <p>
+        This named accessor property returns a function that resolves the plural form according to the effective locale and the provided options of this PluralForm object.
+      
+      </p>
+      <p>
+        The value of the [[Get]] attribute is a function that takes the following steps:
+      
+      </p>
+
+      <emu-alg><ol><li>Let <var>pf</var> be this PluralForm object.</li><li>If <var>pf</var>.[[boundResolve]] is <emu-val>undefined</emu-val>, then<ol><li>Let <var>F</var> be a new built-in function object as defined in <emu-xref href="#sec-plural-form-functions"><a href="#sec-plural-form-functions">1.3.4</a></emu-xref>.</li><li>The value of <var>F</var>’s <emu-val>length</emu-val> property is 1.</li><li>Let <var>bf</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-boundfunctioncreate">BoundFunctionCreate</a>(<var>F</var>, «<emu-val>this</emu-val> value»).</li><li>Set <var>pf</var>.[[boundResolve]] to <var>bf</var>.</li></ol></li><li>Return <var>pf</var>.[[boundResolve]].
+      </li></ol></emu-alg>
+
+      <emu-note><span class="note">Note</span>
+        The function returned by [[Get]] is bound to this PluralForm object so that it can be passed directly to Array.prototype.map or other functions.
+      
+      </emu-note>
+
+      <p>
+        The value of the [[Set]] attribute is <emu-val>undefined</emu-val>.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-plural-form-functions">
+      <h1><span class="secnum">1.3.4</span>Plural Form Functions<span class="utils"><span class="anchor"><a href="#sec-plural-form-functions">#</a></span></span></h1>
+
+      <p>
+        A PluralForm format function is an anonymous function that takes one argument value, and performs the following steps:
+      
+      </p>
+
+      <emu-alg><ol><li>Let <var>pluralForm</var> be the <emu-val>this</emu-val> value.</li><li>Assert: <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-ecmascript-data-types-and-values">Type</a>(<var>pluralForm</var>) is Object and <var>pluralForm</var> has an [[initializedPluralForm]] internal slot whose value is <emu-val>true</emu-val>.</li><li>If <var>value</var> is not provided, let <var>value</var> be <emu-val>undefined</emu-val>.</li><li>Let <var>x</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-tonumber">ToNumber</a>(<var>value</var>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>x</var>).</li><li>Return ResolvePlural(<var>pluralForm</var>, <var>x</var>).
+      </li></ol></emu-alg>
+
+      <p>
+        When the ResolvePlural abstract operation is called with arguments <var>pluralForm</var> (which must be an object initialized as a PluralForm) and <var>x</var> (which must be a Number value), it returns a String value representing the plural form of <var>x</var> according to the effective locale and the formatting options of <var>pluralForm</var>.
+      
+      </p>
+
+      <p>
+        The computations rely on String values and locations within numeric strings that are dependent upon the implementation and the effective locale of <var>pluralForm</var> (“ILD") or upon the implementation. The ILD String mentioned, must not contain any characters in the General Category “Number, decimal digit" as specified by the Unicode Standard.
+      
+      </p>
+
+      <emu-note><span class="note">Note</span>
+        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at  <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+      
+      </emu-note>
+
+      <p>
+        The following steps are taken:
+      
+      </p>
+
+      <emu-alg aoid="ResolvePlural"><ol><li>Let <var>pluralRuleFunction</var> be the value of <var>pluralForm</var>.[[pluralRule]].</li><li>If the <var>result</var> of isFinite(<var>x</var>) is <emu-val>false</emu-val>, then<ol><li>If <var>x</var> is <emu-val>NaN</emu-val>, then<ol><li>Let <var>n</var> be an ILD String value indicating the <emu-val>NaN</emu-val> value.</li></ol></li><li>Else<ol><li>If <var>x</var> &lt; 0, then<ol><li>let <var>n</var> be -<emu-val>Infinity</emu-val>.</li></ol></li><li>Else<ol><li>Let <var>n</var> be <emu-val>Infinity</emu-val>.</li></ol></li></ol></li></ol></li><li>Else<ol><li>If <var>x</var> &lt; 0, then<ol><li>Let <var>n</var> be -<var>x</var>.</li></ol></li><li>Else<ol><li>Let <var>n</var> be <var>x</var>.</li></ol></li></ol></li><li>Let <var>result</var> be <var>pluralRuleFunction</var>(<var>n</var>).</li><li>Return <var>result</var>.
+      </li></ol></emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype.resolvedOptions">
+      <h1><span class="secnum">1.3.5</span>Intl.PluralForm.prototype.resolvedOptions ()<span class="utils"><span class="anchor"><a href="#sec-Intl.PluralForm.prototype.resolvedOptions">#</a></span></span></h1>
+
+      <p>
+        This function provides access to the locale and formatting options computed during initialization of the object.
+      
+      </p>
+      <p>
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this PluralForm object (see  <emu-xref href="#sec-properties-of-intl-pluralform-instances"><a href="#sec-properties-of-intl-pluralform-instances">1.4</a></emu-xref>): locale and style. Properties whose corresponding internal slots are not present are not assigned.
+      
+      </p>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-pluralform-instances">
+    <h1><span class="secnum">1.4</span>Properties of Intl.PluralForm Instances<span class="utils"><span class="anchor"><a href="#sec-properties-of-intl-pluralform-instances">#</a></span></span></h1>
+
+    <p>
+      Intl.PluralForm instances inherit properties from <emu-val>%PluralFormPrototype%</emu-val>.
+    
+    </p>
+
+    <p>
+      Intl.PluralForm instances and other objects that have been successfully initialized as a PluralForm have [[initializedIntlObject]] and [[initializedPluralForm]] internal slots whose values are <emu-val>true</emu-val>.
+    
+    </p>
+
+    <p>
+      Objects that have been successfully initialized as a PluralForm object also have several internal slots that are computed by the constructor:
+    
+    </p>
+
+    <ul>
+      <li>[[locale]] is a String value with the language tag of the locale whose localization is used for formatting.</li>
+      <li>[[style]] is one of the String values <emu-val>"cardinal"</emu-val>, or <emu-val>"ordinal"</emu-val>, identifying the plural form style used.</li>
+    </ul>
+
+    <p>
+      Finally, objects that have been successfully initialized as a PluralForm have a [[boundResolve]] internal slot that caches the function returned by the resolve accessor (<emu-xref href="#sec-Intl.PluralForm.prototype.resolve"><a href="#sec-Intl.PluralForm.prototype.resolve">1.3.3</a></emu-xref>).
+    
+    </p>
+  </emu-clause>
+</emu-clause>
+</emu-import>
+</body>

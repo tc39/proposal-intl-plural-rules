@@ -1,0 +1,281 @@
+<emu-clause id="pluralform-objects">
+  <h1>PluralForm Objects</h1>
+
+  <emu-clause id="sec-intl-pluralform-constructor">
+    <h1>The Intl.PluralForm Constructor</h1>
+
+    <p>
+      The PluralForm constructor is a standard built-in property of the Intl object. Behaviour common to all service constructor properties of the Intl object is specified in <emu-xref href="#sec-internal-slots"></emu-xref>.
+    </p>
+
+    <emu-clause id="sec-InitializePluralForm" aoid="InitializePluralForm">
+      <h1>InitializePluralForm (pluralForm, locales, options)</h1>
+
+      <p>
+        The abstract operation InitializePluralForm accepts the arguments _pluralForm_ (which must be an object), _locales_, and _options_. It initializes _pluralForm_ as a PluralForm object.
+      </p>
+
+      <p>
+        The following steps are taken:
+      </p>
+
+      <emu-alg>
+        1. If _pluralForm_ has an [[initializedIntlObject]] internal slot with value *true*, throw a *TypeError* exception.
+        1. Set _pluralForm_.[[initializedIntlObject]] to *true*.
+        1. Let _requestedLocales_ be CanonicalizeLocaleList(_locales_).
+        1. ReturnIfAbrupt(_requestedLocales_).
+        1. If _options_ is *undefined*, then
+          1. Let _options_ be ObjectCreate(*%ObjectPrototype%*).
+        1. Else
+          1. Let _options_ be ToObject(_options_).
+          1. ReturnIfAbrupt(_options_).
+        1. Let _opt_ be a new Record.
+        1. Let _matcher_ be GetOption(_options_, *"localeMatcher"*, *"string"*, «*"lookup"*, *"best fit"*», *"best fit"*).
+        1. ReturnIfAbrupt(_matcher_).
+        1. Set _opt_.[[localeMatcher]] to _matcher_.
+        1. Let _localeData_ be *%PluralForm%*.[[localeData]].
+        1. Let _r_ be ResolveLocale(*%PluralForm%*.[[availableLocales]], _requestedLocales_, _opt_, *%PluralForm%*.[[relevantExtensionKeys]], _localeData_).
+        1. Set _pluralForm_.[[locale]] to the value of _r_.[[locale]].
+        1. Let _dataLocale_ be _r_.[[dataLocale]].
+        1. Let _s_ be GetOption(_options_, *"style"*, *"string"*, «*"cardinal"*, *"ordinal"*», *"cardinal"*).
+        1. ReturnIfAbrupt(_s_).
+        1. Set _pluralForm_.[[style]] to _s_.
+        1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
+        1. Let _pluralRules_ be Get(_dataLocaleData_, *"pluralRules"*).
+        1. Assert: _pluralRules_ is an object (see <emu-xref href="#sec-Intl.PluralForm-internal-slots"></emu-xref>).
+        1. Set _pluralForm_.[[pluralRule]] to Get(_pluralRules_, s).
+        1. Set _pluralForm_.[[boundResolve]] to *undefined*.
+        1. Set _pluralForm_.[[initializedPluralForm]] to *true*.
+        1. Return _pluralForm_.
+      </emu-alg>
+
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm">
+      <h1>Intl.PluralForm([ locales [, options]])</h1>
+
+      <p>
+        When the *Intl.PluralForm* function is called with optional arguments the following steps are taken:
+      </p>
+
+      <emu-alg>
+        1. If NewTarget is *undefined*, let _newTarget_ be the active function object, else let _newTarget_ be NewTarget.
+        1. Let _pluralForm_ be OrdinaryCreateFromConstructor(_newTarget_, *%PluralFormPrototype%*).
+        1. ReturnIfAbrupt(_pluralForm_).
+        1. Return InitializePluralForm(_pluralForm_, _locales_, _options_).
+      </emu-alg>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-pluralform-constructor">
+    <h1>Properties of the Intl.PluralForm Constructor</h1>
+
+    <p>
+      Besides the internal slots and the *length* property (whose value is 0), the Intl.PluralForm constructor has the following properties:
+    </p>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype">
+      <h1>Intl.PluralForm.prototype</h1>
+
+      <p>
+        The value of *Intl.PluralForm.prototype* is *%PluralFormPrototype%*.
+      </p>
+      <p>
+        This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false* }.
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm.supportedLocalesOf">
+      <h1>Intl.PluralForm.supportedLocalesOf (locales [, options ])</h1>
+
+      <p>
+        When the *supportedLocalesOf* method of *%PluralForm%* is called, the following steps are taken:
+      </p>
+
+      <emu-alg>
+        1. Let _availableLocales_ be *%PluralForm%*.[[availableLocales]].
+        1. Let _requestedLocales_ be CanonicalizeLocaleList(_locales_).
+        1. Return SupportedLocales(_availableLocales_, _requestedLocales_, _options_).
+      </emu-alg>
+
+      <p>
+        The value of the *length* property of the *supportedLocalesOf* method is 1.
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm-internal-slots">
+      <h1>Internal slots</h1>
+
+      <p>
+        The value of the [[availableLocales]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref>.
+      </p>
+
+      <p>
+        The value of the [[relevantExtensionKeys]] internal slot is *["pr"]*.
+      </p>
+
+      <emu-note>
+        Unicode Technical Standard 35 describes one locale extension key that is relevant to pluralization form, "pr" for language plural rules.
+      </emu-note>
+
+      <p>
+        The value of the [[localeData]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref> and the following additional constraints:
+      </p>
+
+      <ul>
+        <li>[[localeData]][locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have properties with the names of the two plural form styles: *"ordinal"* and *"cardinal"*. Each of these properties in turn must be a function. These functions expect a numeric argument and the return must be string value *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* or *"other"*. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules.</li>
+      </ul>
+
+      <emu-note>
+        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+      </emu-note>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-pluralform-prototype-object">
+    <h1>Properties of the Intl.PluralForm Prototype Object</h1>
+
+    <p>
+      The Intl.PluralForm prototype object is itself an Intl.PluralForm instance as specified in <emu-xref href="#sec-properties-of-intl-pluralform-instances"></emu-xref>, whose internal slots are set as if it had been constructed by the expression Construct(*%PluralForm%*).
+    </p>
+    <p>
+      In the following descriptions of functions that are properties or [[Get]] attributes of properties of *%PluralFormPrototype%*, the phrase "this PluralForm object" refers to the object that is the this  value for the invocation of the function; a *TypeError* exception is thrown if the this value is not an object or an object that does not have an [[initializedPluralForm]] internal slot with value *true*.
+    </p>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype.constructor">
+      <h1>Intl.PluralForm.prototype.constructor</h1>
+
+      <p>
+        The initial value of *Intl.PluralForm.prototype.constructor* is *%PluralForm%*.
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype-toStringTag">
+      <h1>Intl.PluralForm.prototype[@@toStringTag]</h1>
+
+      <p>
+        The initial value of the @@toStringTag property is the string value *"Object"*.
+      </p>
+      <p>
+        This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype.resolve">
+      <h1>Intl.PluralForm.prototype.resolve</h1>
+
+      <p>
+        This named accessor property returns a function that resolves the plural form according to the effective locale and the provided options of this PluralForm object.
+      </p>
+      <p>
+        The value of the [[Get]] attribute is a function that takes the following steps:
+      </p>
+
+      <emu-alg>
+        1. Let _pf_ be this PluralForm object.
+        1. If _pf_.[[boundResolve]] is *undefined*, then
+          1. Let _F_ be a new built-in function object as defined in <emu-xref href="#sec-plural-form-functions"></emu-xref>.
+          1. The value of _F_’s *length* property is 1.
+          1. Let _bf_ be BoundFunctionCreate(_F_, «*this* value»).
+          1. Set _pf_.[[boundResolve]] to _bf_.
+        1. Return _pf_.[[boundResolve]].
+      </emu-alg>
+
+      <emu-note>
+        The function returned by [[Get]] is bound to this PluralForm object so that it can be passed directly to Array.prototype.map or other functions.
+      </emu-note>
+
+      <p>
+        The value of the [[Set]] attribute is *undefined*.
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-plural-form-functions">
+      <h1>Plural Form Functions</h1>
+
+      <p>
+        A PluralForm format function is an anonymous function that takes one argument value, and performs the following steps:
+      </p>
+
+      <emu-alg>
+        1. Let _pluralForm_ be the *this* value.
+        1. Assert: Type(_pluralForm_) is Object and _pluralForm_ has an [[initializedPluralForm]] internal slot whose value is *true*.
+        1. If _value_ is not provided, let _value_ be *undefined*.
+        1. Let _x_ be ToNumber(_value_).
+        1. ReturnIfAbrupt(_x_).
+        1. Return ResolvePlural(_pluralForm_, _x_).
+      </emu-alg>
+
+      <p>
+        When the ResolvePlural abstract operation is called with arguments _pluralForm_ (which must be an object initialized as a PluralForm) and _x_ (which must be a Number value), it returns a String value representing the plural form of _x_ according to the effective locale and the formatting options of _pluralForm_.
+      </p>
+
+      <p>
+        The computations rely on String values and locations within numeric strings that are dependent upon the implementation and the effective locale of _pluralForm_ (“ILD") or upon the implementation. The ILD String mentioned, must not contain any characters in the General Category “Number, decimal digit" as specified by the Unicode Standard.
+      </p>
+
+      <emu-note>
+        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+      </emu-note>
+
+      <p>
+        The following steps are taken:
+      </p>
+
+      <emu-alg aoid="ResolvePlural">
+        1. Let _pluralRuleFunction_ be the value of _pluralForm_.[[pluralRule]].
+        1. If the _result_ of isFinite(_x_) is *false*, then
+          1. If _x_ is *NaN*, then
+            1. Let _n_ be an ILD String value indicating the *NaN* value.
+          1. Else
+            1. If _x_ < 0, then
+              1. let _n_ be -*Infinity*.
+            1. Else
+              1. Let _n_ be *Infinity*.
+        1. Else
+          1. If _x_ < 0, then
+            1. Let _n_ be -_x_.
+          1. Else
+            1. Let _n_ be _x_.
+        1. Let _result_ be _pluralRuleFunction_(_n_).
+        1. Return _result_.
+      </emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.PluralForm.prototype.resolvedOptions">
+      <h1>Intl.PluralForm.prototype.resolvedOptions ()</h1>
+
+      <p>
+        This function provides access to the locale and formatting options computed during initialization of the object.
+      </p>
+      <p>
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this PluralForm object (see <emu-xref href="#sec-properties-of-intl-pluralform-instances"></emu-xref>): locale and style. Properties whose corresponding internal slots are not present are not assigned.
+      </p>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-pluralform-instances">
+    <h1>Properties of Intl.PluralForm Instances</h1>
+
+    <p>
+      Intl.PluralForm instances inherit properties from *%PluralFormPrototype%*.
+    </p>
+
+    <p>
+      Intl.PluralForm instances and other objects that have been successfully initialized as a PluralForm have [[initializedIntlObject]] and [[initializedPluralForm]] internal slots whose values are *true*.
+    </p>
+
+    <p>
+      Objects that have been successfully initialized as a PluralForm object also have several internal slots that are computed by the constructor:
+    </p>
+
+    <ul>
+      <li>[[locale]] is a String value with the language tag of the locale whose localization is used for formatting.</li>
+      <li>[[style]] is one of the String values *"cardinal"*, or *"ordinal"*, identifying the plural form style used.</li>
+    </ul>
+
+    <p>
+      Finally, objects that have been successfully initialized as a PluralForm have a [[boundResolve]] internal slot that caches the function returned by the resolve accessor (<emu-xref href="#sec-Intl.PluralForm.prototype.resolve"></emu-xref>).
+    </p>
+  </emu-clause>
+</emu-clause>
