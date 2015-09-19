@@ -7,24 +7,24 @@ This proposal is based on the Unicode Language Plural Rules:
 ### Example
 
 ```javascript
-let o = new Intl.PluralFormat("en", {
+let o = new Intl.PluralForm("en", {
     style: "cardinal" // default style
 });
-console.log(o.format(0)); // "other"
-console.log(o.format(1)); // "one"
-console.log(o.format(2)); // "other"
+console.log(o.resolve(0)); // "other"
+console.log(o.resolve(1)); // "one"
+console.log(o.resolve(2)); // "other"
 ```
 
 Support for ordinals is also included:
 
 ```javascript
-let o = new Intl.PluralFormat("en", {
+let o = new Intl.PluralForm("en", {
     style: "ordinal"
 });
-console.log(o.format(11)); // "one"
-console.log(o.format(22)); // "two"
-console.log(o.format(33)); // "few"
-console.log(o.format(44)); // "other"
+console.log(o.resolve(11)); // "one"
+console.log(o.resolve(22)); // "two"
+console.log(o.resolve(33)); // "few"
+console.log(o.resolve(44)); // "other"
 ```
 
 ### Usage
