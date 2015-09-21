@@ -1,41 +1,65 @@
-## `Intl.PluralForm` API Specification [draft]
+## Intl.PluralRules API Specification [draft]
 
-This proposal is based on the Unicode Language Plural Rules:
+### Status
+
+__Stage 0__
+
+Implementation Progress
+
+ * Polyfill (in progress)
+
+Backpointers
+
+* https://github.com/tc39/ecma402/issues/34
+* https://groups.google.com/forum/#!topic/javascript-globalization/3nFDf5al5hU
+
+### Authors
+
+ * Caridy Patiño (@caridy)
+ * Eric Ferraiuolo (@ericf)
+ * Alex Sexton (@SlexAxton)
+
+### Reviewers
+
+TBD
+
+### Informative
+
+This proposal is based on the LDML spec, C.11 Language Plural Rules:
 
  * http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
 
-### Example
+### Prior Art
+
+ * Java: `Class PluralRules`
+
+### Usage
 
 ```javascript
-let o = new Intl.PluralForm("en", {
+let o = new Intl.PluralRules("en", {
     style: "cardinal" // default style
 });
-console.log(o.resolve(0)); // "other"
-console.log(o.resolve(1)); // "one"
-console.log(o.resolve(2)); // "other"
+console.log(o.select(0)); // "other"
+console.log(o.select(1)); // "one"
+console.log(o.select(2)); // "other"
 ```
 
 Support for ordinals is also included:
 
 ```javascript
-let o = new Intl.PluralForm("en", {
+let o = new Intl.PluralRules("en", {
     style: "ordinal"
 });
-console.log(o.resolve(11)); // "one"
-console.log(o.resolve(22)); // "two"
-console.log(o.resolve(33)); // "few"
-console.log(o.resolve(44)); // "other"
+console.log(o.select(11)); // "one"
+console.log(o.select(22)); // "two"
+console.log(o.select(33)); // "few"
+console.log(o.select(44)); // "other"
 ```
 
-### Usage
+### Render Spec
 
-```
+```bash
 npm install
 npm run build
 open index.html
 ```
-
-### Details about this proposal
-
- * https://github.com/tc39/ecma402/issues/34
- * https://groups.google.com/forum/#!topic/javascript-globalization/3nFDf5al5hU
