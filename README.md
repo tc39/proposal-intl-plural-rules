@@ -6,7 +6,7 @@ __Stage 0__
 
 Implementation Progress
 
- * Polyfill (in progress)
+ * Polyfill: https://github.com/eemeli/IntlPluralRules
 
 Backpointers
 
