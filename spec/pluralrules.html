@@ -22,23 +22,19 @@
       <emu-alg>
         1. If _pluralRules_ has an [[initializedIntlObject]] internal slot with value *true*, throw a *TypeError* exception.
         1. Set _pluralRules_.[[initializedIntlObject]] to *true*.
-        1. Let _requestedLocales_ be CanonicalizeLocaleList(_locales_).
-        1. ReturnIfAbrupt(_requestedLocales_).
+        1. Let _requestedLocales_ be ? CanonicalizeLocaleList(_locales_).
         1. If _options_ is *undefined*, then
           1. Let _options_ be ObjectCreate(*%ObjectPrototype%*).
         1. Else
-          1. Let _options_ be ToObject(_options_).
-          1. ReturnIfAbrupt(_options_).
+          1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
-        1. Let _matcher_ be GetOption(_options_, *"localeMatcher"*, *"string"*, «*"lookup"*, *"best fit"*», *"best fit"*).
-        1. ReturnIfAbrupt(_matcher_).
+        1. Let _matcher_ be ? GetOption(_options_, *"localeMatcher"*, *"string"*, «*"lookup"*, *"best fit"*», *"best fit"*).
         1. Set _opt_.[[localeMatcher]] to _matcher_.
         1. Let _localeData_ be *%PluralRules%*.[[localeData]].
         1. Let _r_ be ResolveLocale(*%PluralRules%*.[[availableLocales]], _requestedLocales_, _opt_, *%PluralRules%*.[[relevantExtensionKeys]], _localeData_).
         1. Set _pluralRules_.[[locale]] to the value of _r_.[[locale]].
         1. Let _dataLocale_ be _r_.[[dataLocale]].
-        1. Let _s_ be GetOption(_options_, *"style"*, *"string"*, «*"cardinal"*, *"ordinal"*», *"cardinal"*).
-        1. ReturnIfAbrupt(_s_).
+        1. Let _s_ be ? GetOption(_options_, *"style"*, *"string"*, «*"cardinal"*, *"ordinal"*», *"cardinal"*).
         1. Set _pluralRules_.[[style]] to _s_.
         1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
         1. Let _pluralRules_ be Get(_dataLocaleData_, *"pluralRules"*).
@@ -60,8 +56,7 @@
 
       <emu-alg>
         1. If NewTarget is *undefined*, let _newTarget_ be the active function object, else let _newTarget_ be NewTarget.
-        1. Let _pluralRules_ be OrdinaryCreateFromConstructor(_newTarget_, *%PluralRulesPrototype%*).
-        1. ReturnIfAbrupt(_pluralRules_).
+        1. Let _pluralRules_ be ? OrdinaryCreateFromConstructor(_newTarget_, *%PluralRulesPrototype%*).
         1. Return InitializePluralRules(_pluralRules_, _locales_, _options_).
       </emu-alg>
     </emu-clause>
@@ -201,8 +196,7 @@
         1. Let _pluralRules_ be the *this* value.
         1. Assert: Type(_pluralRules_) is Object and _pluralRules_ has an [[initializedPluralRules]] internal slot whose value is *true*.
         1. If _value_ is not provided, let _value_ be *undefined*.
-        1. Let _x_ be ToNumber(_value_).
-        1. ReturnIfAbrupt(_x_).
+        1. Let _x_ be ? ToNumber(_value_).
         1. Return ResolvePlural(_pluralRules_, _x_).
       </emu-alg>
 
