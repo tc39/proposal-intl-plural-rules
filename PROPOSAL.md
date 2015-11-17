@@ -45,7 +45,7 @@ pf.select(44); // "other" (e.g.: 44th)
 ```
 
 ## Spec
-You can view the [spec text](spec/pluralrules.html) or rendered as [HTML](http://caridy.github.io/intl-plural-form-spec/index.html).
+You can view the [spec text](spec/pluralrules.html) or rendered as [HTML](https://rawgit.com/caridy/intl-plural-rules-spec/master/index.html).
 
 ## Naming
 
