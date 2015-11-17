@@ -65,17 +65,20 @@ Few libraries that would likely get benefited by `Intl.PluralForm` since they wi
 
 ### Pluralization rules in other languages
 
-Java:
+java:
+
+http://icu-project.org/apiref/icu4j/com/ibm/icu/text/PluralFormat.html
 
 ```java
-TBD
+Class PluralFormat
+
+java.lang.Object
+  java.text.Format
+    com.ibm.icu.text.UFormat
+      com.ibm.icu.text.PluralFormat
 ```
 
-PHP:
-
-```php
-TBD
-```
+_note: java uses `type` - The plural type (e.g., "cardinal" or "ordinal"), instead of `style`._
 
 ### Annexes
 
