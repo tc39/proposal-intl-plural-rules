@@ -28,14 +28,14 @@
         1. Else
           1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
+        1. Let _s_ be ? GetOption(_options_, *"type"*, *"string"*, «*"cardinal"*, *"ordinal"*», *"cardinal"*).
+        1. Set _pluralRules_.[[type]] to _s_.
         1. Let _matcher_ be ? GetOption(_options_, *"localeMatcher"*, *"string"*, «*"lookup"*, *"best fit"*», *"best fit"*).
         1. Set _opt_.[[localeMatcher]] to _matcher_.
         1. Let _localeData_ be *%PluralRules%*.[[localeData]].
         1. Let _r_ be ResolveLocale(*%PluralRules%*.[[availableLocales]], _requestedLocales_, _opt_, *%PluralRules%*.[[relevantExtensionKeys]], _localeData_).
         1. Set _pluralRules_.[[locale]] to the value of _r_.[[locale]].
         1. Let _dataLocale_ be _r_.[[dataLocale]].
-        1. Let _s_ be ? GetOption(_options_, *"style"*, *"string"*, «*"cardinal"*, *"ordinal"*», *"cardinal"*).
-        1. Set _pluralRules_.[[style]] to _s_.
         1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
         1. Let _pluralRules_ be Get(_dataLocaleData_, *"pluralRules"*).
         1. Assert: _pluralRules_ is an object (see <emu-xref href="#sec-Intl.PluralRules-internal-slots"></emu-xref>).
@@ -118,7 +118,7 @@
       </p>
 
       <ul>
-        <li>[[localeData]][locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have properties with the names of the two plural rules styles: *"ordinal"* and *"cardinal"*. Each of these properties in turn must be a function. These functions expect a numeric argument and the return must be string value *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* or *"other"*. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules.</li>
+        <li>[[localeData]][locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have properties with the names of the two plural types: *"ordinal"* and *"cardinal"*. Each of these properties in turn must be a function. These functions expect a numeric argument and the return must be string value *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* or *"other"*. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules.</li>
       </ul>
 
       <emu-note>
@@ -186,7 +186,7 @@
     </emu-clause>
 
     <emu-clause id="sec-plural-rules-functions">
-      <h1>Plural Form Functions</h1>
+      <h1>Plural Rules Functions</h1>
 
       <p>
         A PluralRules select function is an anonymous function that takes one argument value, and performs the following steps:
@@ -243,7 +243,7 @@
         This function provides access to the locale and options computed during initialization of the object.
       </p>
       <p>
-        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this PluralRules object (see <emu-xref href="#sec-properties-of-intl-pluralrules-instances"></emu-xref>): locale and style. Properties whose corresponding internal slots are not present are not assigned.
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this PluralRules object (see <emu-xref href="#sec-properties-of-intl-pluralrules-instances"></emu-xref>): locale, type, and pluralCategories. Properties whose corresponding internal slots are not present are not assigned.
       </p>
     </emu-clause>
   </emu-clause>
@@ -265,7 +265,8 @@
 
     <ul>
       <li>[[locale]] is a String value with the language tag of the locale whose localization is used by the plural rules.</li>
-      <li>[[style]] is one of the String values *"cardinal"*, or *"ordinal"*, identifying the plural rules used.</li>
+      <li>[[type]] is one of the String values *"cardinal"*, or *"ordinal"*, identifying the plural rules used.</li>
+      <li>[[pluralCategories]] is an array of unique string values, from the the list *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* and *"other"*, that are relevant for the locale whose localization is specified in LDML Language Plural Rules.</li>
     </ul>
 
     <p>

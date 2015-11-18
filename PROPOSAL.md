@@ -15,7 +15,7 @@ It is highly probable that the majority of current plural rules implementations 
 The simples example of plural form selection:
 
 ```javascript
-let pf = new Intl.PluralForm('en');
+let pf = new Intl.PluralRules('en');
 pf.select(0);    // "other"
 pf.select(1);    // "one"
 pf.select(11);   // "other"
@@ -25,7 +25,7 @@ pf.select(100);  // "other"
 Arabic has a different rule for cardinals ending on `1`:
 
 ```javascript
-let pf = new Intl.PluralForm('ar');
+let pf = new Intl.PluralRules('ar');
 pf.select(0);    // "other"
 pf.select(1);    // "one"
 pf.select(11);   // "one"
@@ -49,7 +49,7 @@ You can view the [spec text](spec/pluralrules.html) or rendered as [HTML](https:
 
 ## Naming
 
-Despite the fact that this is a lower level API, we have chosen a similar form than the used for `Intl.NumberFormat` and `Intl.DateTimeFormat`. The creation of `Intl.PluralForm` instance is an expensive operation that requires resolution of locale data, and most likely, libraries will attempt to cache those instances, just like they do for `Intl.NumberFormat`, and `Intl.DateTimeFormat`.
+Despite the fact that this is a lower level API, we have chosen a similar form than the used for `Intl.NumberFormat` and `Intl.DateTimeFormat`. The creation of `Intl.PluralRules` instance is an expensive operation that requires resolution of locale data, and most likely, libraries will attempt to cache those instances, just like they do for `Intl.NumberFormat`, and `Intl.DateTimeFormat`.
 
 We have also chosen `style` as the primary form of switching between different set of rules for consistency with `Intl.NumberFormat`, and `Intl.DateTimeFormat`.
 
@@ -57,7 +57,7 @@ Since this new feature does not format a provided data, just categorize it, we h
 
 ### Libraries that apply pluralization rules today
 
-Few libraries that would likely get benefited by `Intl.PluralForm` since they will not have to fetch CLDR data to apply pluralization rules by their own:
+Few libraries that would likely get benefited by `Intl.PluralRules` since they will not have to fetch CLDR data to apply pluralization rules by their own:
 
 * momentjs: relative time format (e.g.: `"1 hour ago"` vs `"2 hours ago"`).
 * formatjs: ICU messages pluralization rules and relative time format.
@@ -70,7 +70,7 @@ java:
 http://icu-project.org/apiref/icu4j/com/ibm/icu/text/PluralFormat.html
 
 ```java
-Class PluralFormat
+Class PluralRulesat
 
 java.lang.Object
   java.text.Format
@@ -84,7 +84,7 @@ _note: java uses `type` - The plural type (e.g., "cardinal" or "ordinal"), inste
 
 #### ICU messages
 
-Pluralization rules in ICU messages can be resolved by `Intl.PluralForm()`:
+Pluralization rules in ICU messages can be resolved by `Intl.PluralRules()`:
 
 ```
 { counter, plural,
