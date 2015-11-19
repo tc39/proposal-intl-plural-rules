@@ -2,7 +2,7 @@
 
 ### Status
 
-__Stage 0__
+__Proposal for Stage 0__
 
 Implementation Progress
 
@@ -37,7 +37,7 @@ This proposal is based on the LDML spec, C.11 Language Plural Rules:
 
 ```javascript
 let o = new Intl.PluralRules("en", {
-    style: "cardinal" // default style
+    type: "cardinal" // default type
 });
 console.log(o.select(0)); // "other"
 console.log(o.select(1)); // "one"
@@ -48,7 +48,7 @@ Support for ordinals is also included:
 
 ```javascript
 let o = new Intl.PluralRules("en", {
-    style: "ordinal"
+    type: "ordinal"
 });
 console.log(o.select(11)); // "one"
 console.log(o.select(22)); // "two"

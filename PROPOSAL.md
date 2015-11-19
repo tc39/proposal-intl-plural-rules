@@ -36,7 +36,7 @@ pf.select(100);  // "other"
 
 ```javascript
 let pf = new Intl.PluralRules("en", {
-    style: "ordinal"
+    type: "ordinal"
 });
 pf.select(11); // "one"   (e.g.: 11st)
 pf.select(22); // "two"   (e.g.: 22nd)
@@ -51,9 +51,7 @@ You can view the [spec text](spec/pluralrules.html) or rendered as [HTML](https:
 
 Despite the fact that this is a lower level API, we have chosen a similar form than the used for `Intl.NumberFormat` and `Intl.DateTimeFormat`. The creation of `Intl.PluralRules` instance is an expensive operation that requires resolution of locale data, and most likely, libraries will attempt to cache those instances, just like they do for `Intl.NumberFormat`, and `Intl.DateTimeFormat`.
 
-We have also chosen `style` as the primary form of switching between different set of rules for consistency with `Intl.NumberFormat`, and `Intl.DateTimeFormat`.
-
-Since this new feature does not format a provided data, just categorize it, we have chosen `.select(value)` instead of `.format(value)`.
+We have also chosen `type` as the primary form of switching between different selection rules. Since this new feature does not format a provided data, just categorize it, we have chosen `.select(value)`.
 
 ### Libraries that apply pluralization rules today
 
@@ -77,8 +75,6 @@ java.lang.Object
     com.ibm.icu.text.UFormat
       com.ibm.icu.text.PluralFormat
 ```
-
-_note: java uses `type` - The plural type (e.g., "cardinal" or "ordinal"), instead of `style`._
 
 ### Annexes
 
