@@ -38,7 +38,7 @@ pf.select(100);  // "other"
 let pf = new Intl.PluralRules("en", {
     type: "ordinal"
 });
-pf.select(11); // "one"   (e.g.: 11st)
+pf.select(11); // "one"   (e.g.: 11th)
 pf.select(22); // "two"   (e.g.: 22nd)
 pf.select(33); // "few"   (e.g.: 33rd)
 pf.select(44); // "other" (e.g.: 44th)
@@ -68,7 +68,7 @@ java:
 http://icu-project.org/apiref/icu4j/com/ibm/icu/text/PluralFormat.html
 
 ```java
-Class PluralRulesat
+Class PluralFormat
 
 java.lang.Object
   java.text.Format

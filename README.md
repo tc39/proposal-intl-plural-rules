@@ -2,7 +2,7 @@
 
 ### Status
 
-__Proposal for Stage 0__
+__Stage 1__
 
 Implementation Progress
 
@@ -55,6 +55,12 @@ console.log(o.select(22)); // "two"
 console.log(o.select(33)); // "few"
 console.log(o.select(44)); // "other"
 ```
+
+### TODO
+
+ * `new Intl.PluralRules("en").format(1.02);` should produce `"other"`
+ * Bikeshed on Intl.PluralRules
+ * Spec `pluralCategories` resolution
 
 ### Render Spec
 
