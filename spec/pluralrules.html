@@ -48,8 +48,7 @@
         1. Let _pluralRules_ be the *this* value.
         1. Assert: Type(_pluralRules_) is Object and _pluralRules_ has an [[initializedPluralRules]] internal slot whose value is *true*.
         1. If _value_ is not provided, let _value_ be *undefined*.
-        1. Let _x_ be ? ToNumber(_value_).
-        1. Return ResolvePlural(_pluralRules_, _x_).
+        1. Return ResolvePlural(_pluralRules_, _value_).
       </emu-alg>
     </emu-clause>
 
@@ -65,7 +64,6 @@
 
       <emu-alg aoid="ResolvePlural">
         1. Assert: Type(_pluralRules_) is an Object, and _pluralRules_'s internal slot[[initializedPluralRules]] is *true*.
-        1. Assert: Type(_x_) is a Number value.
         1. Let _pluralRuleFunction_ be the value of _pluralRules_.[[pluralRule]].
         1. If the _result_ of isFinite(_x_) is *false*, then
           1. If _x_ is *NaN*, then
