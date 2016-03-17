@@ -22,6 +22,19 @@
         1. Let _opt_ be a new Record.
         1. Let _s_ be ? GetOption(_options_, *"type"*, *"string"*, « *"cardinal"*, *"ordinal"* », *"cardinal"*).
         1. Set _pluralRules_.[[type]] to _s_.
+        1. Let _mnid_ be ? GetNumberOption(_options_, *"minimumIntegerDigits"*, 1, 21, 1).
+        1. Set _pluralRules_.[[minimumIntegerDigits]] to _mnid_.
+        1. Let _mnfd_ be ? GetNumberOption(_options_, *"minimumFractionDigits"*, 0, 20, 0).
+        1. Set _pluralRules_.[[minimumFractionDigits]] to _mnfd_.
+        1. Let _mxfd_ be ? GetNumberOption(_options_, *"maximumFractionDigits"*, _mnfd_, 20, max(_mnfd_, 3)).
+        1. Set _pluralRules_.[[maximumFractionDigits]] to _mxfd_.
+        1. Let _mnsd_ be ? Get(_options_, *"minimumSignificantDigits"*).
+        1. Let _mxsd_ be ? Get(_options_, *"maximumSignificantDigits"*).
+        1. If _mnsd_ is not *undefined* or _mxsd_ is not *undefined*, then
+          1. Let _mnsd_ be ? GetNumberOption(_options_, *"minimumSignificantDigits"*, 1, 21, 1).
+          1. Let _mxsd_ be ? GetNumberOption(_options_, *"maximumSignificantDigits"*, _mnsd_, 21, 21).
+          1. Set _pluralRules_.[[minimumSignificantDigits]] to _mnsd_.
+          1. Set _pluralRules_.[[maximumSignificantDigits]] to _mxsd_.
         1. Let _localeData_ be *%PluralRules%*.[[localeData]].
         1. Let _r_ be ResolveLocale(*%PluralRules%*.[[availableLocales]], _requestedLocales_, _opt_, *%PluralRules%*.[[relevantExtensionKeys]], _localeData_).
         1. Set _pluralRules_.[[locale]] to the value of _r_.[[locale]].
@@ -52,6 +65,83 @@
       </emu-alg>
     </emu-clause>
 
+    <emu-clause id="sec-GetOperands" aoid="GetOperands">
+       <h1>GetOperands (x)</h1>
+       <p>
+         When the GetOperands abstract operation is called with argument _n_ (which must be a finite Number value), it returns an Object value with the list of plural operands used by plural rules functions.
+       </p>
+
+       <p>
+        The following steps are taken:
+       </p>
+
+       <emu-alg aoid="GetOperands">
+         1. Let _i_, _v_, _f_, _t_, _w_ be *0*
+         1. Let _dp_ be Call(%StringProto_indexOf%, _n_, « `"."` »).
+         1. If _dp_ is -1, then
+           1. Set _iv_ to _n_
+         1. Else,
+           1. Let _iv_ be the substring of _n_ from position 0, inclusive, to position _dp_, exclusive.
+           1. Let _fv_ be the substring of _n_ from position _dp_, exclusive.
+           1. Let _f_ be ? ToNumber(_fv_).
+           1. Let _v_ be ? ToLength(? Get(_fv_, *"length"*)).
+         1. Let _i_ be ? ToNumber(_iv_).
+         1. If _f_ is not 0, then
+           1. Let _ft_ be the value of _fv_ stripped of trailing *0*.
+           1. Let _w_ be ? ToLength(? Get(_ft_, *"length"*)).
+           1. Let _t_ be ? ToNumber(_ft_).
+         1. If _n_ is smaller than *0*, then
+           1. Let _n_ be _n_ multiplied by *-1*.
+           1. Let _i_ be _i_ multiplied by *-1*.
+         1. Let _result_ be a new Record {
+           [[Number]]: _n_,
+           [[IntegerDigits]]: _i_,
+           [[NumberOfFractionDigits]]: _v_,
+           [[NumberOfFractionDigitsWithoutTrailing]]: _w_,
+           [[FractionDigits]]: _f_,
+           [[FractionDigitsWithoutTrailing]]: _t_
+         }.
+         1. Return _result_.
+       </emu-alg>
+
+       <emu-table id="table-plural-operands">
+         <emu-caption>Plural Rules Operands</emu-caption>
+         <table class="real-table">
+           <thead>
+             <tr>
+               <th>Symbol</th>
+               <th>Value</th>
+             </tr>
+           </thead>
+           <tr>
+             <td>n</td>
+             <td>absolute value of the source number (integer and decimals)</td>
+           </tr>
+           <tr>
+             <td>i</td>
+             <td>integer digits of n.</td>
+           </tr>
+           <tr>
+             <td>v</td>
+             <td>number of visible fraction digits in n, <i>with</i> trailing zeros.</td>
+           </tr>
+           <tr>
+             <td>w</td>
+             <td>number of visible fraction digits in n, <i>without</i> trailing zeros.</td>
+           </tr>
+           <tr>
+             <td>f</td>
+             <td>visible fractional digits in n, <i>with</i> trailing zeros.</td>
+           </tr>
+           <tr>
+             <td>t</td>
+             <td>visible fractional digits in n, <i>without</i> trailing zeros. </td>
+           </tr>
+         </table>
+       </emu-table>
+
+    </emu-clause>
+
     <emu-clause id="sec-ResolvePlural" aoid="ResolvePlural">
       <h1>ResolvePlural (pluralRules, x)</h1>
       <p>
@@ -64,22 +154,23 @@
 
       <emu-alg aoid="ResolvePlural">
         1. Assert: Type(_pluralRules_) is an Object, and _pluralRules_'s internal slot[[initializedPluralRules]] is *true*.
+        1. Let _nx_ be ? ToNumber(_x_).
+        1. If the _result_ of isFinite(_nx_) is *false*, then
+          1. Return *"other"*.
+        1. If the _pluralRules_.[[minimumSignificantDigits]] and _pluralRules_.[[maximumSignificantDigits]] are present, then
+          1. Let _n_ be ToRawPrecision(_nx_, _pluralRules_.[[minimumSignificantDigits]], _pluralRules_.[[maximumSignificantDigits]]).
+        1. Else,
+          1. Let _n_ be ToRawFixed(_nx_, _pluralRules_.[[minimumIntegerDigits]], _pluralRules_.[[minimumFractionDigits]], _pluralRules_.[[maximumFractionDigits]]).
         1. Let _pluralRuleFunction_ be the value of _pluralRules_.[[pluralRule]].
-        1. If the _result_ of isFinite(_x_) is *false*, then
-          1. If _x_ is *NaN*, then
-            1. Let _n_ be an ILD String value indicating the *NaN* value.
-          1. Else
-            1. If _x_ < 0, then
-              1. let _n_ be -*Infinity*.
-            1. Else
-              1. Let _n_ be *Infinity*.
-        1. Else
-          1. If _x_ < 0, then
-            1. Let _n_ be -_x_.
-          1. Else
-            1. Let _n_ be _x_.
-        1. NOTE n might need to be transform ToString() to preserve decimals.
-        1. Let _result_ be _pluralRuleFunction_(_n_).
+        1. Let _operands_ be ? _GetOperands_(_n_).
+
+        1. Let _result_ be _pluralRuleFunction_(
+          _operands_.[[Number]],
+          _operands_.[[IntegerDigits]],
+          _operands_.[[NumberOfFractionDigits]],
+          _operands_.[[NumberOfFractionDigitsWithoutTrailing]],
+          _operands_.[[FractionDigits]],
+          _operands_.[[FractionDigitsWithoutTrailing]]).
         1. Return _result_.
       </emu-alg>
 
