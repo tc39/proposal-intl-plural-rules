@@ -2,7 +2,7 @@
 
 ### Status
 
-__Stage 1__
+🚀 __Stage 2__
 
 Implementation Progress
 
@@ -21,7 +21,8 @@ Backpointers
 
 ### Reviewers
 
-TBD
+* Daniel Ehrenberg (@littledan)
+* Stefan Penner (@stefanpenner)
 
 ### Informative
 
