@@ -58,9 +58,9 @@ console.log(o.select(44)); // "other"
 
 ### TODO
 
- * `new Intl.PluralRules("en").format(1.02);` should produce `"other"`
- * Bikeshed on Intl.PluralRules
- * Spec `pluralCategories` resolution
+ * [x] `new Intl.PluralRules("en").format(1.02);` should produce `"other"`
+ * [x] Bikeshed on Intl.PluralRules
+ * [x] Spec `pluralCategories` resolution
 
 ### Render Spec
 
