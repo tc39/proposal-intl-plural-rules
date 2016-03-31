@@ -2,16 +2,17 @@
 
 ### Status
 
-🚀 __Stage 2__
+Current Stage:
 
-Implementation Progress
+ * 🚀 __Stage 2__
+
+Implementation Progress:
 
  * Polyfill: https://github.com/eemeli/IntlPluralRules
 
-Backpointers
+Spec Text:
 
-* https://github.com/tc39/ecma402/issues/34
-* https://groups.google.com/forum/#!topic/javascript-globalization/3nFDf5al5hU
+ * https://rawgit.com/caridy/intl-plural-rules-spec/master/index.html
 
 ### Authors
 
@@ -70,3 +71,8 @@ npm install
 npm run build
 open index.html
 ```
+
+### Backpointers
+
+ * https://github.com/tc39/ecma402/issues/34
+ * https://groups.google.com/forum/#!topic/javascript-globalization/3nFDf5al5hU
