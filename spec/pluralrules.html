@@ -22,19 +22,9 @@
         1. Let _opt_ be a new Record.
         1. Let _s_ be ? GetOption(_options_, *"type"*, *"string"*, « *"cardinal"*, *"ordinal"* », *"cardinal"*).
         1. Set _pluralRules_.[[Type]] to _s_.
-        1. Let _mnid_ be ? GetNumberOption(_options_, *"minimumIntegerDigits"*, 1, 21, 1).
-        1. Set _pluralRules_.[[MinimumIntegerDigits]] to _mnid_.
-        1. Let _mnfd_ be ? GetNumberOption(_options_, *"minimumFractionDigits"*, 0, 20, 0).
-        1. Set _pluralRules_.[[MinimumFractionDigits]] to _mnfd_.
-        1. Let _mxfd_ be ? GetNumberOption(_options_, *"maximumFractionDigits"*, _mnfd_, 20, max(_mnfd_, 3)).
-        1. Set _pluralRules_.[[MaximumFractionDigits]] to _mxfd_.
-        1. Let _mnsd_ be ? Get(_options_, *"minimumSignificantDigits"*).
-        1. Let _mxsd_ be ? Get(_options_, *"maximumSignificantDigits"*).
-        1. If _mnsd_ is not *undefined* or _mxsd_ is not *undefined*, then
-          1. Let _mnsd_ be ? GetNumberOption(_options_, *"minimumSignificantDigits"*, 1, 21, 1).
-          1. Let _mxsd_ be ? GetNumberOption(_options_, *"maximumSignificantDigits"*, _mnsd_, 21, 21).
-          1. Set _pluralRules_.[[MinimumSignificantDigits]] to _mnsd_.
-          1. Set _pluralRules_.[[MaximumSignificantDigits]] to _mxsd_.
+        1. Let _no_ be the result of the expression *Object.assign({}, options, { type: undefined, useGrouping: false })*
+        1. Let _nf_ be the result of creating a new NumberFormat object as if by the expression *new Intl.NumberFormat(["en"], no)* where *Intl.NumberFormat* is the standard built-in constructor
+        1. Set _pluralRules_.[[NumberFormat]] to _nf_.
         1. Let _localeData_ be *%PluralRules%*.[[LocaleData]].
         1. Let _r_ be ResolveLocale(*%PluralRules%*.[[AvailableLocales]], _requestedLocales_, _opt_, *%PluralRules%*.[[RelevantExtensionKeys]], _localeData_).
         1. Set _pluralRules_.[[Locale]] to the value of _r_.[[Locale]].
@@ -151,23 +141,13 @@
         1. Assert: Type(_n_) is Number.
         1. If isFinite(_n_) is *false*, then
           1. Return *"other"*.
-        1. If the _pluralRules_.[[MinimumSignificantDigits]] is not *undefined* and _pluralRules_.[[MaximumSignificantDigits]] is not *undefined*, then
-          1. Let _n_ be ToRawPrecision(_n_, _pluralRules_.[[MinimumSignificantDigits]], _pluralRules_.[[MaximumSignificantDigits]]).
-        1. Else,
-          1. Let _n_ be ToRawFixed(_n_, _pluralRules_.[[MinimumIntegerDigits]], _pluralRules_.[[MinimumFractionDigits]], _pluralRules_.[[MaximumFractionDigits]]).
+        1. Let _s_ be the result of calling the FormatNumber abstract operation with arguments _pluralRules_.[[NumberFormat]] and _n_.
         1. Let _locale_ be _pluralRules_.[[Locale]].
         1. Let _type_ be _pluralRules_.[[Type]].
-        1. Let _operands_ be ? _GetOperands_(_n_).
+        1. Let _operands_ be ? _GetOperands_(_s_).
         1. Return ? PluralRuleSelection(_locale_, _type_, _n_, _operands_).
       </emu-alg>
 
-      <emu-note>
-        The computations rely on Number values and locations within _n_ that are dependent upon the implementation and the effective locale of _pluralRules_ (“ILD") or upon the implementation. The ILD String mentioned, must not contain any characters in the General Category “Number, decimal digit" as specified by the Unicode Standard.
-      </emu-note>
-
-      <emu-note>
-        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
-      </emu-note>
     </emu-clause>
 
   </emu-clause>
@@ -304,7 +284,7 @@
         This function provides access to the locale and options computed during initialization of the object.
       </p>
       <p>
-        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this PluralRules object (see <emu-xref href="#sec-properties-of-intl-pluralrules-instances"></emu-xref>): locale, type, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, and pluralCategories. Properties whose corresponding internal slots are not present are not assigned.
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this PluralRules object, or of the NumberFormat object held in its [[NumberFormat]] slot. (see <emu-xref href="#sec-properties-of-intl-pluralrules-instances"></emu-xref>): locale, type, style, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, and pluralCategories. Properties whose corresponding internal slots are not present are not assigned.
       </p>
     </emu-clause>
   </emu-clause>
@@ -327,9 +307,7 @@
     <ul>
       <li>[[Locale]] is a String value with the language tag of the locale whose localization is used by the plural rules.</li>
       <li>[[Type]] is one of the String values *"cardinal"*, or *"ordinal"*, identifying the plural rules used.</li>
-      <li>[[MinimumIntegerDigits]] is a non-negative integer Number value indicating the minimum integer digits to be used. Numbers will be padded with leading zeroes if necessary.</li>
-      <li>[[MinimumFractionDigits]] and [[MaximumFractionDigits]] are non-negative integer Number values indicating the minimum and maximum fraction digits to be used. Numbers will be rounded or padded with trailing zeroes if necessary.</li>
-      <li>[[MinimumSignificantDigits]] and [[MaximumSignificantDigits]] are positive integer Number values indicating the minimum and maximum fraction digits to be shown. Either none or both of these properties are present; if they are, they override minimum and maximum integer and fraction digits – the formatter uses however many integer and fraction digits are required to display the specified number of significant digits.</li>
+      <li>[[NumberFormat]] is an initialized NumberFormat object with locale fixed to *"en"*, used to format Number values to Strings.</li>
       <li>[[PluralCategories]] is an array of unique string values, from the the list *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* and *"other"*, that are relevant for the locale whose localization is specified in LDML Language Plural Rules.</li>
     </ul>
 
