@@ -21,15 +21,15 @@
           1. Let _options_ be ? ToObject(_options_).
         1. Let _t_ be ? GetOption(_options_, *"type"*, *"string"*, « *"cardinal"*, *"ordinal"* », *"cardinal"*).
         1. Set _pluralRules_.[[Type]] to _t_.
-        1. Set _minID_ to Get(_options_, *"minimumIntegerDigits"*).
+        1. Let _minID_ be Get(_options_, *"minimumIntegerDigits"*).
         1. Set _pluralRules_.[[MinimumIntegerDigits]] to _minID_.
-        1. Set _minFD_ to Get(_options_, *"minimumFractionDigits"*).
+        1. Let _minFD_ be Get(_options_, *"minimumFractionDigits"*).
         1. Set _pluralRules_.[[MinimumFractionDigits]] to _minFD_.
-        1. Set _maxFD_ to Get(_options_, *"maximumFractionDigits"*).
+        1. Let _maxFD_ be Get(_options_, *"maximumFractionDigits"*).
         1. Set _pluralRules_.[[MaximumFractionDigits]] to _maxFD_.
-        1. Set _minSD_ to Get(_options_, *"minimumSignificantDigits"*).
+        1. Let _minSD_ be Get(_options_, *"minimumSignificantDigits"*).
         1. Set _pluralRules_.[[MinimumSignificantDigits]] to _minSD_.
-        1. Set _maxSD_ to Get(_options_, *"maximumSignificantDigits"*).
+        1. Let _maxSD_ be Get(_options_, *"maximumSignificantDigits"*).
         1. Set _pluralRules_.[[MaximumSignificantDigits]] to _maxSD_.
         1. Let _r_ be ResolveLocale(*%PluralRules%*.[[AvailableLocales]], _requestedLocales_).
         1. Set _pluralRules_.[[Locale]] to the value of _r_.[[Locale]].
