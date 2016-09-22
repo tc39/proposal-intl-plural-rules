@@ -21,11 +21,16 @@
           1. Let _options_ be ? ToObject(_options_).
         1. Let _t_ be ? GetOption(_options_, *"type"*, *"string"*, « *"cardinal"*, *"ordinal"* », *"cardinal"*).
         1. Set _pluralRules_.[[Type]] to _t_.
-        1. Set _pluralRules_.[[MinimumIntegerDigits]] to options[*"minimumIntegerDigits"*].
-        1. Set _pluralRules_.[[MinimumFractionDigits]] to options[*"minimumFractionDigits"*].
-        1. Set _pluralRules_.[[MaximumFractionDigits]] to options[*"maximumFractionDigits"*].
-        1. Set _pluralRules_.[[MinimumSignificantDigits]] to options[*"minimumSignificantDigits"*].
-        1. Set _pluralRules_.[[MaximumSignificantDigits]] to options[*"maximumSignificantDigits"*].
+        1. Set _minID_ to Get(_options_, *"minimumIntegerDigits"*).
+        1. Set _pluralRules_.[[MinimumIntegerDigits]] to _minID_.
+        1. Set _minFD_ to Get(_options_, *"minimumFractionDigits"*).
+        1. Set _pluralRules_.[[MinimumFractionDigits]] to _minFD_.
+        1. Set _maxFD_ to Get(_options_, *"maximumFractionDigits"*).
+        1. Set _pluralRules_.[[MaximumFractionDigits]] to _maxFD_.
+        1. Set _minSD_ to Get(_options_, *"minimumSignificantDigits"*).
+        1. Set _pluralRules_.[[MinimumSignificantDigits]] to _minSD_.
+        1. Set _maxSD_ to Get(_options_, *"maximumSignificantDigits"*).
+        1. Set _pluralRules_.[[MaximumSignificantDigits]] to _maxSD_.
         1. Let _r_ be ResolveLocale(*%PluralRules%*.[[AvailableLocales]], _requestedLocales_).
         1. Set _pluralRules_.[[Locale]] to the value of _r_.[[Locale]].
         1. Assert: _pluralRules_ is an object (see <emu-xref href="#sec-Intl.PluralRules-internal-slots"></emu-xref>).
@@ -138,13 +143,7 @@
           1. Return *"other"*.
         1. Let _locale_ be _pluralRules_.[[Locale]].
         1. Let _type_ be _pluralRules_.[[Type]].
-        1. Let _nfOptions_ be ObjectCreate(*%ObjectPrototype%*).
-        1. Set _nfOptions_[*"minimumIntegerDigits"*] to _pluralRules_.[[MinimumIntegerDigits]].
-        1. Set _nfOptions_[*"minimumFractionDigits"*] to _pluralRules_.[[MinimumFractionDigits]].
-        1. Set _nfOptions_[*"maximumFractionDigits"*] to _pluralRules_.[[MaximumFractionDigits]].
-        1. Set _nfOptions_[*"minimumSignificantDigits"*] to _pluralRules_.[[MinimumSignificantDigits]].
-        1. Set _nfOptions_[*"maximumSignificantDigits"*] to _pluralRules_.[[MaximumSignificantDigits]].
-        1. Let _s_ be ? FormatNumberString(_nfOptions_, _n_).
+        1. Let _s_ be ? FormatNumberToString(_pluralRules_, _n_).
         1. Let _operands_ be ? _GetOperands_(_s_).
         1. Return ? PluralRuleSelection(_locale_, _type_, _n_, _operands_).
       </emu-alg>
@@ -285,7 +284,7 @@
         This function provides access to the locale and options computed during initialization of the object.
       </p>
       <p>
-        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this PluralRules object, or of the NumberFormat object held in its [[NumberFormat]] slot. (see <emu-xref href="#sec-properties-of-intl-pluralrules-instances"></emu-xref>): locale, type, style, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, and pluralCategories. Properties whose corresponding internal slots are not present are not assigned.
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this PluralRules object. (see <emu-xref href="#sec-properties-of-intl-pluralrules-instances"></emu-xref>): locale, type, style, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, and pluralCategories. Properties whose corresponding internal slots are not present are not assigned.
       </p>
     </emu-clause>
   </emu-clause>
