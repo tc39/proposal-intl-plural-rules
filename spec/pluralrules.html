@@ -20,6 +20,9 @@
         1. Else
           1. Let _options_ be ? ToObject(_options_).
         1. Let _t_ be ? GetOption(_options_, *"type"*, *"string"*, « *"cardinal"*, *"ordinal"* », *"cardinal"*).
+        1. Let _opt_ be a new Record.
+        1. Let _matcher_ be ? GetOption(_options_, *"localeMatcher"*, *"string"*, &laquo; *"lookup"*, *"best fit"* &raquo;, *"best fit"*).
+        1. Set _opt_.[[localeMatcher]] to _matcher_.
         1. Set _pluralRules_.[[Type]] to _t_.
         1. Let _minID_ be Get(_options_, *"minimumIntegerDigits"*).
         1. Set _pluralRules_.[[MinimumIntegerDigits]] to _minID_.
@@ -31,7 +34,8 @@
         1. Set _pluralRules_.[[MinimumSignificantDigits]] to _minSD_.
         1. Let _maxSD_ be Get(_options_, *"maximumSignificantDigits"*).
         1. Set _pluralRules_.[[MaximumSignificantDigits]] to _maxSD_.
-        1. Let _r_ be ResolveLocale(*%PluralRules%*.[[AvailableLocales]], _requestedLocales_).
+        1. Let _relevantExtensionKeys_ be a List.
+        1. Let _r_ be ResolveLocale(*%PluralRules%*.[[AvailableLocales]], _requestedLocales_, _opt_).
         1. Set _pluralRules_.[[Locale]] to the value of _r_.[[Locale]].
         1. Assert: _pluralRules_ is an object (see <emu-xref href="#sec-Intl.PluralRules-internal-slots"></emu-xref>).
         1. Set _pluralRules_.[[InitializedPluralRules]] to *true*.
