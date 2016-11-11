@@ -24,7 +24,7 @@
         1. Let _matcher_ be ? GetOption(_options_, *"localeMatcher"*, *"string"*, &laquo; *"lookup"*, *"best fit"* &raquo;, *"best fit"*).
         1. Set _opt_.[[localeMatcher]] to _matcher_.
         1. Set _pluralRules_.[[Type]] to _t_.
-        1. Call SetNumberFormatOptions(_pluralRules_, _options_).
+        1. Perform ! SetNumberFormatOptions(_pluralRules_, _options_).
         1. If _pluralRules_.[[minimumIntegerDigits]] is *undefined*, then
           1. Set _pluralRules_.[[minimumIntegerDigits]] to *0*.
         1. If _pluralRules_.[[maximumFractionDigits]] is *undefined*, then
