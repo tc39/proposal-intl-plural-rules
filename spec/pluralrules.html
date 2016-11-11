@@ -24,16 +24,11 @@
         1. Let _matcher_ be ? GetOption(_options_, *"localeMatcher"*, *"string"*, &laquo; *"lookup"*, *"best fit"* &raquo;, *"best fit"*).
         1. Set _opt_.[[localeMatcher]] to _matcher_.
         1. Set _pluralRules_.[[Type]] to _t_.
-        1. Let _minID_ be Get(_options_, *"minimumIntegerDigits"*).
-        1. Set _pluralRules_.[[MinimumIntegerDigits]] to _minID_.
-        1. Let _minFD_ be Get(_options_, *"minimumFractionDigits"*).
-        1. Set _pluralRules_.[[MinimumFractionDigits]] to _minFD_.
-        1. Let _maxFD_ be Get(_options_, *"maximumFractionDigits"*).
-        1. Set _pluralRules_.[[MaximumFractionDigits]] to _maxFD_.
-        1. Let _minSD_ be Get(_options_, *"minimumSignificantDigits"*).
-        1. Set _pluralRules_.[[MinimumSignificantDigits]] to _minSD_.
-        1. Let _maxSD_ be Get(_options_, *"maximumSignificantDigits"*).
-        1. Set _pluralRules_.[[MaximumSignificantDigits]] to _maxSD_.
+        1. Perform ! SetNumberFormatOptions(_pluralRules_, _options_).
+        1. If _pluralRules_.[[minimumIntegerDigits]] is *undefined*, then
+          1. Set _pluralRules_.[[minimumIntegerDigits]] to *0*.
+        1. If _pluralRules_.[[maximumFractionDigits]] is *undefined*, then
+          1. Set _pluralRules_.[[maximumFractionDigits]] to max(_pluralRules_.[[minimumFractionDigits]], 3).
         1. Let _r_ be ResolveLocale(*%PluralRules%*.[[AvailableLocales]], _requestedLocales_, _opt_).
         1. Set _pluralRules_.[[Locale]] to the value of _r_.[[Locale]].
         1. Assert: _pluralRules_ is an object (see <emu-xref href="#sec-Intl.PluralRules-internal-slots"></emu-xref>).
