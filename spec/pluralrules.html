@@ -255,16 +255,15 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.PluralRules.prototype.select">
-      <h1>Intl.PluralRules.prototype.select([value])</h1>
+      <h1>Intl.PluralRules.prototype.select( value )</h1>
 
       <p>
-        When the *Intl.PluralRules.prototype.select* is called with an optional argument _value_, the following steps are taken:
+        When the *Intl.PluralRules.prototype.select* is called with an argument _value_, the following steps are taken:
       </p>
 
       <emu-alg>
         1. Let _pluralRules_ be *this* value.
         1. If Type(_pluralRules_) is not Object or _pluralRules_ does not have an [[InitializedPluralRules]] internal slot whose value is *true*, throw a TypeError exception.
-        1. If _value_ is not provided, let _value_ be *undefined*.
         1. Let _n_ be ? ToNumber(_value_).
         1. Return ? ResolvePlural(_pluralRules_, _n_).
       </emu-alg>
