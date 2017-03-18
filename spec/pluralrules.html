@@ -229,7 +229,7 @@
     <h1>Properties of the Intl.PluralRules Prototype Object</h1>
 
     <p>
-      The Intl.PluralRules prototype object is itself an Intl.PluralRules instance as specified in <emu-xref href="#sec-properties-of-intl-pluralrules-instances"></emu-xref>, whose internal slots are set as if it had been constructed by the expression Construct(*%PluralRules%*).
+      The Intl.PluralRules prototype object is itself an ordinary object. %PluralRulesPrototype% is not an Intl.PluralRules instance and does not have an [[InitializedPluralRules]] internal slot or any of the other internal slots of Intl.PluralRules instance objects.
     </p>
     <p>
       In the following descriptions of functions that are properties or [[Get]] attributes of properties of *%PluralRulesPrototype%*, the phrase "this PluralRules object" refers to the object that is the this  value for the invocation of the function; a *TypeError* exception is thrown if the this value is not an object or an object that does not have an [[InitializedPluralRules]] internal slot with value *true*.
