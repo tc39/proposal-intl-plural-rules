@@ -9,6 +9,10 @@ Current Stage:
 Implementation Progress:
 
  * Polyfill: https://github.com/eemeli/IntlPluralRules
+ 
+ Explainer:
+ 
+ * https://github.com/tc39/proposal-intl-plural-rules/blob/master/PROPOSAL.md
 
 Spec Text:
 
