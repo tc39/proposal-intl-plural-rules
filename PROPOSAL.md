@@ -22,13 +22,14 @@ pf.select(11);   // "other"
 pf.select(100);  // "other"
 ```
 
-Arabic has a different rule for cardinals ending on `1`:
+Macedonian has a different rule for cardinals ending on `1`:
 
 ```javascript
-let pf = new Intl.PluralRules('ar');
+let pf = new Intl.PluralRules('mk');
 pf.select(0);    // "other"
 pf.select(1);    // "one"
 pf.select(11);   // "one"
+pf.select(20.1); // "one"
 pf.select(100);  // "other"
 ```
 
@@ -38,7 +39,7 @@ pf.select(100);  // "other"
 let pf = new Intl.PluralRules("en", {
     type: "ordinal"
 });
-pf.select(11); // "one"   (e.g.: 11th)
+pf.select(11); // "other" (e.g.: 11th)
 pf.select(22); // "two"   (e.g.: 22nd)
 pf.select(33); // "few"   (e.g.: 33rd)
 pf.select(44); // "other" (e.g.: 44th)
