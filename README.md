@@ -56,10 +56,10 @@ Support for ordinals is also included:
 let o = new Intl.PluralRules("en", {
     type: "ordinal"
 });
-console.log(o.select(11)); // "one"
+console.log(o.select(21)); // "one"
 console.log(o.select(22)); // "two"
-console.log(o.select(33)); // "few"
-console.log(o.select(44)); // "other"
+console.log(o.select(23)); // "few"
+console.log(o.select(24)); // "other"
 ```
 
 ### TODO
